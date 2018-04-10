@@ -15,7 +15,7 @@
 
     <p>
         <button @click="previous" v-show="this.questionIndex > 0">
-            Précédent
+            Question précédente
         </button>
         Progression : {{progression}}%</p>
 </div>
