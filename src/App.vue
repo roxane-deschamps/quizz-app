@@ -18,7 +18,13 @@
       </question>
     </div>
     <div id='results-container' v-if='endTest' class="container">
-      <results></results>
+      <results :scores='scores'></results>
+      <div id='feedback'>
+        <h3>Aidez-moi à améliorer ce test !</h3>
+        <input type='text' v-model='feedback'>
+        <button @click='submitFeedback'>Envoyer</button>
+      </div>
+      <button @click='onBeginTest'>Recommencer le test</button>
     </div>
   </div>
 </template>
@@ -27,6 +33,7 @@
 import Question from "./components/Question.vue";
 import Home from "./components/Home.vue";
 import Results from "./components/Results.vue";
+
 
 
 var quiz = {
@@ -53,7 +60,9 @@ export default {
       questionIndex: 0,
       userResponses: '',
       beginTest : false,
-      endTest:false
+      endTest:false,
+      feedback:'',
+      scores:''
     };
   },
   methods:{
@@ -61,6 +70,7 @@ export default {
       this.userResponses[this.questionIndex] = args.valSelected;
       this.questionIndex ++;
       if(this.questionIndex == this.numberOfQuestions){
+        this.scores = [this.userResponses[0], 2, 3, 4, 5];
         this.endTest = true;
       }
     },
@@ -78,6 +88,9 @@ export default {
       this.endTest = false;
       this.questionIndex = 0;
       this.userResponses= Array(this.numberOfQuestions).fill(-1);
+    },
+    submitFeedback(){
+      alert('feedback submited : ' + this.feedback);
     }
   },
   computed:{
@@ -94,8 +107,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: white;
   background-color:#b6ce28;
+  background-color:rgb(15, 148, 239);
 }
 
 .header{
