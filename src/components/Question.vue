@@ -4,7 +4,10 @@
         <h2>{{ questionIndex + 1 }} - {{ questionText }}</h2>
     </div>
     <div class='row responses' >
-            <div class='col-sm' v-for="response in responses" :key="response.value">
+            <div class='col-sm-1 col-thumb'>
+                <i class="material-icons">thumb_down</i>
+            </div>
+            <div class='col-sm-2 col-question' v-for="response in responses" :key="response.value">
                 <div class='radiolabel' :class='{checked:isSelected(response.value)}'>
                     <div 
                     class='radiolabel-top' 
@@ -14,18 +17,26 @@
                     <div class='radiolabel-bottom'></div>
                 </div>
             </div>
+            <div class='col-sm-1 col-thumb'>
+                <i class="material-icons">thumb_up</i>
+            </div>
     </div>
     <div class='row'>
-        <div class='col-sm-2'>
+        <div class='col-sm-2 col-nav'>
         <div @click="previous" v-show="this.questionIndex > 0" class="nav-button">
                     <i class="material-icons">navigate_before</i>
         </div>
         </div>
-        <div class='col-sm-8'>
+        <div class='col-sm-8 col-progress'>
             <div class="progress">
                 <div class="progress-bar" role="progressbar" :style="'width:'+ progression + '%'" :aria-valuenow="questionIndex" aria-valuemin="0" :aria-valuemax="numberOfQuestions">
                 </div>
             </div>
+        </div>
+        <div class='col-sm-2 col-nav'>
+        <div @click="next" v-show="this.answerSelected !== -1" class="nav-button">
+                    <i class="material-icons">navigate_next</i>
+        </div>
         </div>
          
     </div>
@@ -59,6 +70,9 @@ export default{
         previous(){
             this.$emit('previous')
         },
+        next(){
+            this.$emit('next')
+        },
         isSelected(val){
             return val === this.answerSelected;
         }
@@ -80,17 +94,17 @@ export default{
 .radiolabel-top{
     margin:auto;
     color: #000;
-    width:80%;
+    width:85%;
     text-align: center;
     background: white;
-    height: 29vh;
-    padding-top: 20%;
+    height: 22vh;
+    padding-top: 25%;
     cursor: pointer; 
 }
 
 .radiolabel-bottom{
     margin:auto;
-    width:80%;
+    width:85%;
     background-color: white;
     height: 2vh;
 }
@@ -108,8 +122,13 @@ export default{
     background-color: #b6ce28;
 }
 
-.col-sm{
+.col-question{
     text-align:center;
+}
+
+.col-thumb{
+    text-align:center;
+    padding-top: 9vh;
 }
 
 .row.responses{
@@ -121,12 +140,20 @@ export default{
     margin-top:2rem;
 }
 
-.nav-button.material-icons{
-    font-size:2rem;
+.nav-button .material-icons{
+    font-size:2.5em;
 }
 
 .nav-button{
     cursor:pointer;
+}
+
+.col-nav{
+    text-align:center;
+}
+
+.col-progress{
+    padding-top: 0.65em
 }
 
 

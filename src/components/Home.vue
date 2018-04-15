@@ -1,9 +1,23 @@
 <template>
-    <div>
-        <h1>REJOIGNEZ L'EXPLORATION DE L'INGÉNIERIE POSITIVE
-</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tristique urna id fringilla sollicitudin. Nulla varius hendrerit lorem, vel ultrices lectus scelerisque eget. Morbi iaculis sed justo et dignissim. Mauris interdum fermentum massa et mattis. Donec placerat tortor vitae mauris efficitur viverra. Duis rutrum, arcu eget volutpat lobortis, felis orci sollicitudin libero, sit amet venenatis quam justo id tellus. Nulla fermentum tellus eget facilisis dignissim.</p>
-        <button @click='beginTest'>Faire le test</button>
+    <div class='container'>
+        <div class='row' id='home-presentation'>
+            <h1>REJOIGNEZ L'EXPLORATION DE L'INGÉNIERIE POSITIVE
+            </h1>
+
+            <h3>LA CLAVETTE EN QUELQUES MOTS</h3>
+                    <p><br>
+            <b>POURQUOI ?</b><br>
+            On considère souvent que l'ingénierie est essentiellement au service de la rentabilité économique. Or il existe une Ingénierie Positive plus humaine qu'on connaît peu et dont on ne parle pas assez.
+            <br><br>
+            <b>COMMENT ?</b><br>
+            En montrant des exemples inspirants d’Ingénierie responsable, innovante et sociale.
+            <br><br>
+            <b>QUOI ?</b><br>
+            Des vidéos et des articles qui présentent et expliquent des initiatives positives à travers le monde.</p>
+        </div>
+        <div id='home-div-button'>
+            <button class='btn btn-primary' @click='beginTest'>Faire le test</button>
+        </div>
     </div>
     
 </template>
@@ -19,4 +33,9 @@
 </script>
 
 <style>
+
+#home-div-button{
+    text-align:center;
+    margin-top:5%;
+}
 </style>

@@ -13,26 +13,39 @@
                 :answerSelected='userResponses[questionIndex]'
                 :numberOfQuestions='numberOfQuestions'
                 @questionAnswered="onQuestionAnswered" 
-                @previous="decrementIndex">
+                @previous="decrementIndex"
+                @next="incrementIndex">
       </question>
     </div>
     <div id='results-container' v-if='endTest' class="container">
-      <results :scores='scores'></results>
-      <div id='feedback'>
-        <h3>Aidez-moi à améliorer ce test !</h3>
-        <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
-          <div class="btn-group mr-2" role="group" aria-label="First group">
-            <button type="button" class="btn btn-secondary">1</button>
-            <button type="button" class="btn btn-secondary">2</button>
-            <button type="button" class="btn btn-secondary">3</button>
-            <button type="button" class="btn btn-secondary">4</button>
-            <button type="button" class="btn btn-secondary">5</button>
+      <results :scores='scores' @retry='onBeginTest'></results>
+      <div class="container" id='feedback'>
+        <h4>Aide-moi à améliorer ce test !</h4>
+        <div class='row'>
+          <div class='col-sm-3'>
+            Sur une échelle de 5, est-ce que le profil trouvé te correspond ?
+          </div>
+          <div class='col-sm-2'>
+            <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 1}" @click="this.feedback.note = 1">1</button>
+              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 2}" @click="this.feedback.note = 2">2</button>
+              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 3}" @click="this.feedback.note = 3">3</button>
+              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 4}" @click="this.feedback.note = 4">4</button>
+              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 5}" @click="this.feedback.note = 5">5</button>
+            </div>
+            </div>
+          </div>
+          <div class='col-sm-1'>
+          </div>
+          <div class='col-sm-4'>
+            <textarea v-model='feedback.commentaire' placeholder="Tes commentaires"></textarea>
+          </div>
+          <div class='col-sm-2'>
+            <button class='btn btn-primary' @click='submitFeedback'>Envoyer</button>
           </div>
         </div>
-        <input type='text' v-model='feedback'>
-        <button @click='submitFeedback'>Envoyer</button>
       </div>
-      <button @click='onBeginTest'>Recommencer le test</button>
     </div>
   </div>
 </template>
@@ -140,9 +153,12 @@ export default {
       userResponses: '',
       beginTest : false,
       endTest:false,
-      feedback:'',
+      feedback:{
+        note:null,
+        commentaire:''
+      },
       scores:'',
-      idFeedback :''
+      idFeedback :null
     };
   },
   methods:{
@@ -160,6 +176,9 @@ export default {
     decrementIndex(){
       this.questionIndex --;
     },
+    incrementIndex(){
+      this.questionIndex ++;
+    },
     onBeginTest(){
       this.beginTest = true;
       this.endTest = false;
@@ -174,7 +193,7 @@ export default {
     },
     submitFeedback(){
       axios.post('http://localhost:3000/sendFeedback', {
-          feedback:this.feedback
+          feedback:this.feedback.commentaire
       }).then(response => {
         this.idFeedback = response
       })
@@ -193,12 +212,12 @@ export default {
 
 <style>
 .my-app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: white;
 }
+
 
 body {
   background-color:#1565C0;
@@ -211,6 +230,32 @@ body {
 
 .header>img{
   width:15%;
+  margin: 2em;
+}
+
+#feedback{
+  margin-top: 3em;
+  padding: 2em;
+  background-color:white;
+  color:rgb(83, 83, 83);
+}
+
+#feedback h4{
+    margin-bottom:1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgb(63, 63, 63);
+}
+
+#feedback textarea{
+  width:100%;
+}
+
+#feedback .btn.checked{
+    box-shadow: 0 0 0 0.2rem rgba(108,117,125,.5);
+    color: #fff;
+    background-color: #545b62;
+    border-color: #4e555b;
 }
 
 </style>
