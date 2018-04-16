@@ -110,7 +110,7 @@ export default{
 }
 
 .radiolabel:hover>.radiolabel-bottom{
-    background-color:#b6ce28;;
+    background-color:#b6ce28;
     transition: background-color 1s;
 }
 

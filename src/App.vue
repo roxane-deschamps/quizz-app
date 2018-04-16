@@ -74,7 +74,7 @@ var quiz = {
             coeffs:[-2,0,0,-4,0,0]
           },
           {
-            text: "Vous avez tendance à vous emmeler dans vos explications",
+            text: "Vous avez tendance à vous emmêler dans vos explications",
             coeffs:[0,1,1,0,0,-5]
           },
           {
@@ -157,8 +157,9 @@ export default {
         note:null,
         commentaire:''
       },
-      scores:'',
-      idFeedback :null
+      scores:[],
+      idFeedback :null,
+      responsesCoeffs:[-2,-1,0,1,2]
     };
   },
   methods:{
@@ -171,7 +172,18 @@ export default {
       }
     },
     calcScores(){
-      this.scores = [this.userResponses[0], 2, 3, 4, 5, 6];
+      var _this = this;
+      for (var i = 0; i <= 5; i++) {
+        var score = 0.5;
+        this.userResponses.forEach(function(element, index){
+          var scoreQuestion = 0.5/60 * _this.responsesCoeffs[element] * _this.quiz.questions[index].coeffs[i];
+          score += scoreQuestion;
+        });
+        console.log('index profil : ' + i + ', score : ' + score);
+        _this.scores.push(Math.round(score * 100)/100);
+      }
+      
+      
     },
     decrementIndex(){
       this.questionIndex --;
@@ -184,12 +196,14 @@ export default {
       this.endTest = false;
       this.questionIndex = 0;
       this.userResponses= Array(this.numberOfQuestions).fill(-1);
+      this.scores=[];
     },
     returnHome(){
       this.beginTest = false;
       this.endTest = false;
       this.questionIndex = 0;
       this.userResponses= Array(this.numberOfQuestions).fill(-1);
+      this.scores=[];
     },
     submitFeedback(){
       axios.post('http://localhost:3000/sendFeedback', {

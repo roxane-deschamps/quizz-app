@@ -152,7 +152,6 @@ import Chart from 'chart.js';
                 data: {
                     labels: ['Alerteur', 'Bricoleur', 'Collaborateur', 'Ecolo', 'Humaniste', 'Pédagogue'],
                     datasets: [{
-                        label:'Mon profil',
                         data: this.scores,
                         backgroundColor: 'rgba(182,206,40,.5)',
                     }]
@@ -163,7 +162,7 @@ import Chart from 'chart.js';
                         ticks:{
                             display:false,
                             min:0,
-                            max:10
+                            max:1
                         },
                         angleLines:{
                             color:'white'
@@ -251,10 +250,5 @@ a.nav-link:hover{
     bottom:1em;
     right:1em;
 }
-
-
-
-
-
 
 </style>
