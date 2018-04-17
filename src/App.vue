@@ -154,12 +154,12 @@ export default {
       beginTest : false,
       endTest:false,
       feedback:{
+        id:null,
         note:null,
         commentaire:''
       },
       scores:[],
-      idFeedback :null,
-      responsesCoeffs:[-2,-1,0,1,2]
+      responsesCoeffs:[-2,-1,0,1,2],
     };
   },
   methods:{
@@ -168,8 +168,21 @@ export default {
       this.questionIndex ++;
       if(this.questionIndex == this.numberOfQuestions){
         this.calcScores();
+        this.saveAnswersDb();
         this.endTest = true;
       }
+    },
+    saveAnswersDb(){
+        axios.post('http://localhost:3000/sendAnswers', {
+          answers:this.userResponses
+      }).then(response => {
+        this.feedback.id = response;
+        console.log('reponse axios save answers: ' + response);
+      })
+      .catch(e => {
+      console.error(e);
+      console.log('reponse non traitée')
+      });
     },
     calcScores(){
       var _this = this;
@@ -207,13 +220,13 @@ export default {
     },
     submitFeedback(){
       axios.post('http://localhost:3000/sendFeedback', {
-          feedback:this.feedback.commentaire
+          feedback:this.feedback
       }).then(response => {
-        this.idFeedback = response
+        console.log(response);
       })
       .catch(e => {
       console.error(e)
-    });
+      });
     }
   },
   computed:{

@@ -39,7 +39,7 @@
 }
 #home-div-button{
     text-align:center;
-    margin-top:5%;
+    margin-top:2rem;
 }
 
 #home-div-button .btn-primary{

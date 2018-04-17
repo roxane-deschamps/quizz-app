@@ -90,7 +90,9 @@ export default{
 </script>
 
 <style>
-
+.progress{
+    border-radius:.5rem;
+}
 .radiolabel-top{
     margin:auto;
     color: #000;
