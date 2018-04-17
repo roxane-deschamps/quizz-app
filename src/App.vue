@@ -20,29 +20,42 @@
     <div id='results-container' v-if='endTest' class="container">
       <results :scores='scores' @retry='onBeginTest'></results>
       <div class="container" id='feedback'>
-        <h4>Aide-moi à améliorer ce test !</h4>
+        <h4>J'ai besoin de votre aide !</h4>
         <div class='row'>
           <div class='col-sm-3'>
-            Sur une échelle de 5, est-ce que le profil trouvé te correspond ?
+            Sur une échelle de 5, est-ce que le profil trouvé vous correspond ?
           </div>
           <div class='col-sm-2'>
             <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group mr-2" role="group" aria-label="First group">
-              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 1}" @click="this.feedback.note = 1">1</button>
-              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 2}" @click="this.feedback.note = 2">2</button>
-              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 3}" @click="this.feedback.note = 3">3</button>
-              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 4}" @click="this.feedback.note = 4">4</button>
-              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 5}" @click="this.feedback.note = 5">5</button>
+              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 1}" @click="selectEval(1)">1</button>
+              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 2}" @click="selectEval(2)">2</button>
+              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 3}" @click="selectEval(3)">3</button>
+              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 4}" @click="selectEval(4)">4</button>
+              <button type="button" class="btn btn-secondary" :class="{checked:this.feedback.note === 5}" @click="selectEval(5)">5</button>
             </div>
             </div>
           </div>
           <div class='col-sm-1'>
           </div>
           <div class='col-sm-4'>
-            <textarea v-model='feedback.commentaire' placeholder="Tes commentaires"></textarea>
+            <textarea v-model='feedback.commentaire' placeholder="Trouvez-vous ce quiz pertinent ? Des idées d'amélioration ? Un petit coucou ? =)"></textarea>
           </div>
           <div class='col-sm-2'>
             <button class='btn btn-primary' @click='submitFeedback'>Envoyer</button>
+          </div>
+        </div>
+        <div class='row'>
+          <div class="col-sm-5 col-savoir-plus">
+            Êtes-vous curieux d'en savoir plus sur l'ingénieurie positive ?
+          </div>
+          <div class='col-sm-1 col-savoir-plus' >
+            <div class="checkbox checkbox-primary">
+              <input id="checkbox" type="checkbox" v-model="feedback.savoirPlus">
+            </div>
+          </div>
+          <div class='col-sm-4' v-show="feedback.savoirPlus">
+            <input type="email" class="form-control" placeholder="Votre adresse email" v-model="feedback.email">
           </div>
         </div>
       </div>
@@ -156,7 +169,10 @@ export default {
       feedback:{
         id:null,
         note:null,
-        commentaire:''
+        commentaire:'',
+        savoirPlus:false,
+        email:'',
+        profil:null
       },
       scores:[],
       responsesCoeffs:[-2,-1,0,1,2],
@@ -176,7 +192,7 @@ export default {
         axios.post('http://localhost:3000/sendAnswers', {
           answers:this.userResponses
       }).then(response => {
-        this.feedback.id = response;
+        this.feedback.id = response.data;
         console.log('reponse axios save answers: ' + response);
       })
       .catch(e => {
@@ -186,6 +202,8 @@ export default {
     },
     calcScores(){
       var _this = this;
+      var indexProfilMax = -1;
+      var scoreProfilMax = -1;
       for (var i = 0; i <= 5; i++) {
         var score = 0.5;
         this.userResponses.forEach(function(element, index){
@@ -193,10 +211,18 @@ export default {
           score += scoreQuestion;
         });
         console.log('index profil : ' + i + ', score : ' + score);
+        if(score > scoreProfilMax){
+          scoreProfilMax = score;
+          indexProfilMax = i;
+        }
         _this.scores.push(Math.round(score * 100)/100);
       }
-      
-      
+      this.feedback.profil = indexProfilMax;
+
+    },
+    selectEval(note){
+      console.log('dans la méthode selectEval, valeur : ' + note);
+      this.feedback.note = note;
     },
     decrementIndex(){
       this.questionIndex --;
@@ -284,5 +310,19 @@ body {
     background-color: #545b62;
     border-color: #4e555b;
 }
+
+#feedback .col-savoir-plus{
+  margin-top: .375rem;
+  margin-bottom: .5rem;
+}
+
+#feedback .btn-primary{
+  background-color:#1E88E5;
+}
+
+#feedback .btn-primary:hover{
+  background-color:#1565C0;
+}
+
 
 </style>

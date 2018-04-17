@@ -273,4 +273,22 @@ a.nav-link:hover{
     width:80%;
 }
 
+#results .btn-primary{
+   
+    background-color : white;
+    color:rgb(83, 83, 83);;
+    border:none;
+    font-weight:bold;
+    border-top : 0.2em solid  white;
+    border-bottom : 0.3em solid  white; 
+    border-radius:0;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    transition: color 0.15s ease-in-out,border-color 0.3s ease-in-out;
+}
+
+#results .btn-primary:hover{
+    border-bottom : 0.3em solid  #b6ce28; 
+
+}
+
 </style>
