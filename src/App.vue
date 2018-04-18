@@ -193,7 +193,7 @@ export default {
       }
     },
     saveAnswersDb(){
-        axios.post('http://localhost:3000/sendAnswers', {
+        axios.post('http://quiz.laclavette.fr/backend/sendAnswers', {
           answers:this.userResponses
       }).then(response => {
         this.feedback.id = response.data;
@@ -255,7 +255,7 @@ export default {
     },
     submitFeedback(){
       this.feedbackSent = true;
-      axios.post('http://localhost:3000/sendFeedback', {
+      axios.post('http://quiz.laclavette.fr/backend/sendFeedback', {
           feedback:this.feedback
       }).then(response => {
         console.log(response);
