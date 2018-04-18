@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid my-app">
     <div id='header' class='header'>
-      <img src="../src/assets/Logo_Horizontal_bW_white.png" @click='returnHome'>
+      <img src="../src/assets/Logo_Horizontal_bW_white.png" @click='goToLaClavette'>
     </div>
     <home v-if='!beginTest && !endTest'
           @beginTest='onBeginTest'>
@@ -20,7 +20,7 @@
     <div id='results-container' v-if='endTest' class="container">
       <results :scores='scores' @retry='onBeginTest'></results>
       <div class="container" id='feedback'>
-        <h4>J'ai besoin de votre aide !</h4>
+        <h4>Aidez-nous à améliorer ce quiz</h4>
         <div class='row'>
           <div class='col-sm-3'>
             Sur une échelle de 5, est-ce que le profil trouvé vous correspond ?
@@ -36,28 +36,29 @@
             </div>
             </div>
           </div>
-          <div class='col-sm-1'>
-          </div>
-          <div class='col-sm-4'>
+          <div class='offset-sm-1 col-sm-4'>
             <textarea v-model='feedback.commentaire' placeholder="Trouvez-vous ce quiz pertinent ? Des idées d'amélioration ? Un petit coucou ? =)"></textarea>
           </div>
-          <div class='col-sm-2'>
+          <div class='col-sm-2 no-xs'>
             <button class='btn btn-primary' @click='submitFeedback'>Envoyer</button>
           </div>
         </div>
         <div class='row'>
-          <div class="col-sm-5 col-savoir-plus">
-            Êtes-vous curieux d'en savoir plus sur l'ingénieurie positive ?
+          <div class="col-10 col-sm-5 col-savoir-plus">
+            Êtes-vous curieux d'en savoir plus sur l'ingénierie positive ?
           </div>
-          <div class='col-sm-1 col-savoir-plus' >
-            <div class="checkbox checkbox-primary">
-              <input id="checkbox" type="checkbox" v-model="feedback.savoirPlus">
+          <div class='col-2 col-sm-1 col-savoir-plus' >
+            <div class="my-checkbox" @click="feedback.savoirPlus = !feedback.savoirPlus">
+              <i class="material-icons" v-if="feedback.savoirPlus">check</i>
             </div>
           </div>
-          <div class='col-sm-4' >
-            <input v-show="feedback.savoirPlus" type="email" class="form-control" placeholder="Votre adresse email" v-model="feedback.email">
+          <div class='col-sm-4 col-savoir-plus' >
+            <input v-show="feedback.savoirPlus" type="email" placeholder="Votre adresse email" v-model="feedback.email">
           </div>
-           <div class='col-sm-2' id="merci" v-if="feedbackSent">
+          <div class='no-sm col-6'>
+            <button class='btn btn-primary' @click='submitFeedback'>Envoyer</button>
+          </div>
+           <div class='col-6 col-sm-2' id="merci" v-if="feedbackSent">
             Merci !
           </div>
         </div>
@@ -98,7 +99,7 @@ var quiz = {
             coeffs:[2,0,3,2,4,3]
           },
           {
-            text: "Vous êtes pour l'écologie seulement si vous concervez votre niveau de vie",
+            text: "Vous êtes pour l'écologie seulement si vous conservez votre niveau de vie",
             coeffs:[-2,1,0,-5,-2,0]
           },
           {
@@ -106,19 +107,19 @@ var quiz = {
             coeffs:[0,5,0,1,0,0]
           },
           {
-            text: "Seul on est plus efficace",
+            text: "Seul, on est plus efficace",
             coeffs:[-3,0,-4,0,-2,1]
           },
           {
-            text: "Vous n'êtes pas très manuel",
+            text: "Les activités manuelles vous font fuir",
             coeffs:[0,-5,0,0,0,2]
           },
           {
-            text: "Vous pouvez rester facilement 3h sur Wikipedia",
+            text: "Vous pouvez rester facilement 3 heures sur Wikipedia",
             coeffs:[3,0,2,0,0,4]
           },
           {
-            text: "Vous ne pourriez pas vivre sans votre téléphone",
+            text: "Impossible de vivre sans votre téléphone",
             coeffs:[-2,1,2,-3,0,0]
           },
           {
@@ -126,7 +127,7 @@ var quiz = {
             coeffs:[0,5,0,2,0,0]
           },
           {
-            text: "Vous rêver d'avoir un brevet à votre nom",
+            text: "Vous rêvez d'avoir un brevet à votre nom",
             coeffs:[-2,3,-3,-3,-2,-2]
           },
           {
@@ -138,7 +139,7 @@ var quiz = {
             coeffs:[0,-3,0,2,0,1]
           },
           {
-            text: "On n'entend pas assez parler des problèmes écologiques et sociaux",
+            text: "Il faudrait qu'on entende plus parler des problèmes écologiques et sociaux",
             coeffs:[5,0,0,3,3,2]
           },
           {
@@ -250,8 +251,8 @@ export default {
         profil:null
       }
     },
-    returnHome(){
-      this.beginTest = false;
+    goToLaClavette(){
+      window.open("http://www.laclavette.fr");
     },
     submitFeedback(){
       this.feedbackSent = true;
@@ -274,6 +275,30 @@ export default {
 </script>
 
 <style>
+@media (max-width:768px){
+.header{
+  text-align: center;
+  cursor: pointer;
+}
+
+.header>img{
+  height: 8vh;
+  margin: 1.5em;
+}
+}
+
+@media (min-width:768px){
+  .header{
+  text-align: left;
+  cursor: pointer;
+
+}
+.header>img{
+  height: 10vh;
+  margin: 2em;
+}
+
+}
 .my-app {
   font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -286,15 +311,6 @@ body {
   background-color:#1565C0;
 }
 
-.header{
-  text-align: left;
-  cursor: pointer;
-}
-
-.header>img{
-  width:15%;
-  margin: 2em;
-}
 
 #feedback{
   margin-top: 3em;
@@ -308,6 +324,7 @@ body {
     font-size: 1rem;
     font-weight: bold;
     color: rgb(63, 63, 63);
+    text-transform: uppercase;
 }
 
 #feedback textarea{
@@ -323,7 +340,7 @@ body {
 
 #feedback .col-savoir-plus{
   margin-top: .375rem;
-  margin-bottom: .5rem;
+  margin-bottom: .7rem;
 }
 
 #feedback .btn-primary{
@@ -342,5 +359,21 @@ body {
     color: green;
 }
 
+.my-checkbox{
+  width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid rgb(169, 169, 169);
+    margin-top: 0.2rem;
+}
+
+.my-checkbox .material-icons{
+  color:green;
+  font-weight:bold;
+  font-size:1.5rem;
+}
+
+#feedback input[type='email']{
+  width: 100%;
+}
 
 </style>
