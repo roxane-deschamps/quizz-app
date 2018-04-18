@@ -54,8 +54,11 @@
               <input id="checkbox" type="checkbox" v-model="feedback.savoirPlus">
             </div>
           </div>
-          <div class='col-sm-4' v-show="feedback.savoirPlus">
-            <input type="email" class="form-control" placeholder="Votre adresse email" v-model="feedback.email">
+          <div class='col-sm-4' >
+            <input v-show="feedback.savoirPlus" type="email" class="form-control" placeholder="Votre adresse email" v-model="feedback.email">
+          </div>
+           <div class='col-sm-2' id="merci" v-if="feedbackSent">
+            Merci !
           </div>
         </div>
       </div>
@@ -176,6 +179,7 @@ export default {
       },
       scores:[],
       responsesCoeffs:[-2,-1,0,1,2],
+      feedbackSent : false
     };
   },
   methods:{
@@ -232,19 +236,25 @@ export default {
     },
     onBeginTest(){
       this.beginTest = true;
+      this.feedbackSent = false
       this.endTest = false;
       this.questionIndex = 0;
       this.userResponses= Array(this.numberOfQuestions).fill(-1);
       this.scores=[];
+      this.feedback={
+        id:null,
+        note:null,
+        commentaire:'',
+        savoirPlus:false,
+        email:'',
+        profil:null
+      }
     },
     returnHome(){
       this.beginTest = false;
-      this.endTest = false;
-      this.questionIndex = 0;
-      this.userResponses= Array(this.numberOfQuestions).fill(-1);
-      this.scores=[];
     },
     submitFeedback(){
+      this.feedbackSent = true;
       axios.post('http://localhost:3000/sendFeedback', {
           feedback:this.feedback
       }).then(response => {
@@ -318,10 +328,18 @@ body {
 
 #feedback .btn-primary{
   background-color:#1E88E5;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 #feedback .btn-primary:hover{
   background-color:#1565C0;
+}
+
+#merci{
+    padding-left: 2em;
+    color: green;
 }
 
 
