@@ -198,11 +198,11 @@ export default {
           answers:this.userResponses
       }).then(response => {
         this.feedback.id = response.data;
-        console.log('reponse axios save answers: ' + response);
+        //console.log('reponse axios save answers: ' + response);
       })
       .catch(e => {
       console.error(e);
-      console.log('reponse non traitée')
+      //console.log('reponse non traitée')
       });
     },
     calcScores(){
@@ -215,7 +215,7 @@ export default {
           var scoreQuestion = 0.5/60 * _this.responsesCoeffs[element] * _this.quiz.questions[index].coeffs[i];
           score += scoreQuestion;
         });
-        console.log('index profil : ' + i + ', score : ' + score);
+        //console.log('index profil : ' + i + ', score : ' + score);
         if(score > scoreProfilMax){
           scoreProfilMax = score;
           indexProfilMax = i;
@@ -226,7 +226,7 @@ export default {
 
     },
     selectEval(note){
-      console.log('dans la méthode selectEval, valeur : ' + note);
+      //console.log('dans la méthode selectEval, valeur : ' + note);
       this.feedback.note = note;
     },
     decrementIndex(){
